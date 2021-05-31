@@ -10,10 +10,12 @@ module.exports = {
   mode: "development",
   // エントリーポイントの設定
   entry: {
-    app: "./src/index.js",
-    print: "./src/print.js",
+    "app.js": "./src/index.js",
   },
   devtool: "inline-source-map",
+  devServer: {
+    contentBase: path.join(__dirname, "dist"),
+  },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
@@ -24,8 +26,24 @@ module.exports = {
   output: {
     // 出力するファイル名
     // filename: 'main.js',
-    filename: "[name].bundle.js",
+    filename: "[name]",
     // 出力先のパス（絶対パスを指定する必要がある）
     path: path.join(__dirname, "dist"),
+    assetModuleFilename: "images/[hash][ext]",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: "babel-loader",
+        options: {
+          compact: true,
+        },
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        type: "asset/resource",
+      },
+    ],
   },
 };
