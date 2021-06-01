@@ -2,8 +2,13 @@
 
 // output.pathに絶対パスを指定する必要があるため、pathモジュールを読み込んでおく
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const RouteDataMapper = require("webpack-route-data-mapper");
+
+// pages/**/*.pug -> dist/**/*.html
+const htmlTemplates = RouteDataMapper({
+  baseDir: "./src",
+  src: "./**/[!_]*.pug",
+});
 
 module.exports = {
   // モードの設定、v4系以降はmodeを指定しないと、webpack実行時に警告が出る
@@ -16,12 +21,6 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, "dist"),
   },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      title: "Output Management",
-    }),
-  ],
   // 出力の設定
   output: {
     // 出力するファイル名
@@ -29,10 +28,23 @@ module.exports = {
     filename: "[name]",
     // 出力先のパス（絶対パスを指定する必要がある）
     path: path.join(__dirname, "dist"),
-    assetModuleFilename: "images/[hash][ext]",
+    // assetModuleFilename: "images/[hash][ext]",
   },
   module: {
     rules: [
+      {
+        test: /\.pug$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "pug-loader",
+            options: {
+              pretty: true,
+              root: path.resolve(__dirname, "src/"),
+            },
+          },
+        ],
+      },
       {
         test: /\.js$/,
         loader: "babel-loader",
@@ -40,10 +52,19 @@ module.exports = {
           compact: true,
         },
       },
+      // {
+      //   test: /\.(png|jpg|gif)$/,
+      //   type: "asset/resource",
+      // },
       {
-        test: /\.(png|jpg|gif)$/,
-        type: "asset/resource",
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: "file-loader",
+          },
+        ],
       },
     ],
   },
+  plugins: [...htmlTemplates],
 };
