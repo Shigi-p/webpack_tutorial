@@ -6,7 +6,7 @@ const RouteDataMapper = require("webpack-route-data-mapper");
 
 // pages/**/*.pug -> dist/**/*.html
 const htmlTemplates = RouteDataMapper({
-  baseDir: "./src",
+  baseDir: "./src/pages",
   src: "./**/[!_]*.pug",
 });
 
@@ -15,7 +15,7 @@ module.exports = {
   mode: "development",
   // エントリーポイントの設定
   entry: {
-    "app.js": "./src/index.js",
+    "/js/app.js": "./src/js/index.js",
   },
   devtool: "inline-source-map",
   devServer: {
@@ -27,7 +27,7 @@ module.exports = {
     // filename: 'main.js',
     filename: "[name]",
     // 出力先のパス（絶対パスを指定する必要がある）
-    path: path.join(__dirname, "dist"),
+    path: path.resolve(__dirname, "./dist/"),
     // assetModuleFilename: "images/[hash][ext]",
   },
   module: {

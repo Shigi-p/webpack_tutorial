@@ -1,4 +1,4 @@
-import image from "./image01.png";
+import image from "../img/image01.png";
 
 function component() {
   const element = document.createElement("div");
