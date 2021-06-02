@@ -1,4 +1,5 @@
 import image from "../img/image01.png";
+import showMessage from "./test";
 
 function component() {
   const element = document.createElement("div");
@@ -16,6 +17,8 @@ function component() {
   element.appendChild(btn);
 
   element.appendChild(img);
+
+  showMessage("getting started");
 
   return element;
 }

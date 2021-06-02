@@ -15,7 +15,7 @@ module.exports = {
   mode: "development",
   // エントリーポイントの設定
   entry: {
-    "/js/app.js": "./src/js/index.js",
+    "app.js": "./src/js/index.js",
   },
   devtool: "inline-source-map",
   devServer: {
@@ -64,7 +64,15 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
     ],
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
   },
   plugins: [...htmlTemplates],
 };
